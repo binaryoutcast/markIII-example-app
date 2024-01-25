@@ -5,13 +5,14 @@
 
 if CONFIG["MOZ_NO_PIE_COMPAT"]:
     GeckoProgram(CONFIG["MOZ_APP_NAME"] + "-bin")
-
     DIRS += ["no-pie"]
 else:
     GeckoProgram(CONFIG["MOZ_APP_NAME"])
 
 USE_LIBS += ["mozglue"]
+
 SOURCES += ["nsGenericXREApp.cpp"]
+
 LOCAL_INCLUDES += [
     "!/build",
     "/ipc/contentproc/",
@@ -54,3 +55,6 @@ if CONFIG["MOZ_LINUX_32_SSE2_STARTUP_ERROR"]:
         "-mfpmath=387",
     ]
 
+JS_PREFERENCE_FILES += [
+    "profile/all-application.js",
+]
