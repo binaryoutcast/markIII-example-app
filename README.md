@@ -9,4 +9,4 @@ XRE Example Application
 
 **Build Instructions**: Soon.
 
-Until all blocking bugs in `mozilla-central` are dealt with upstream the current platform codebase that this builds from is located: https://github.com/binaryoutcast/mozxhtml-platform.git which is currently at `mozilla-rel122`.
+Until all blocking bugs in `mozilla-central` are created and resolved within upstream, the current platform codebase that this builds from is located: https://github.com/binaryoutcast/mozxhtml-platform.git which is currently at `mozilla-rel122`.
