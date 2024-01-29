@@ -1,24 +1,43 @@
 <?xml version="1.0"?>
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
-     License, v. 2.0. If a copy of the MPL was not distributed with this
-     file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<!DOCTYPE window>
 
 <window id="main-window"
-        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        xmlns:html="http://www.w3.org/1999/xhtml"
-        xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        windowtype="binoc:example"
-        align="stretch"
-        screenX="10" screenY="10"
-        height="640px" width="480px"
-        persist="screenX screenY width height sizemode">
+      xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      windowtype="binoc:example"
+      align="stretch"
+      screenX="10" screenY="10"
+      width="640px" height="480px"
+      title="XUL? Not quite."
+      persist="screenX screenY width height sizemode">
 
-    <linkset>
-      <html:link rel="stylesheet" href="chrome://global/skin/global.css" />
-      <html:link rel="stylesheet" href="chrome://global/content/commonDialog.css" />
-      <html:link rel="stylesheet" href="chrome://global/skin/commonDialog.css" />
-    </linkset>
+  <linkset>
+  <!-- The "global.css" stylesheet is imported first to allow other stylesheets to
+       override rules using selectors with the same specificity. This applies to
+       both "content" and "skin" packages, which bug 1385444 will unify later. -->
+  <html:link rel="stylesheet" href="chrome://global/skin/global.css" />
+  </linkset>
 
-    <xul:label value="Netscape Now" />
+  <script src="chrome://global/content/globalOverlay.js" />
+  <script src="chrome://global/content/customElements.js" />
 
+  <xul:toolbox id="example-toolbox">
+    <xul:menubar id="main-menubar">
+      <xul:menu id="file-menu" label="File">
+        <xul:menupopup id="file-popup">
+          <xul:menuitem label="Quit"/>
+        </xul:menupopup>
+      </xul:menu>
+    </xul:menubar>
+  </xul:toolbox>
+  <xul:browser type="content" src="https://thereisonlyxul.org/" flex="1" style="color: 000 !important" />
+  <xul:statusbar id="status-bar">
+    <xul:spacer flex="1"/>
+  </xul:statusbar>
 </window>
