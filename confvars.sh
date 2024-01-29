@@ -7,6 +7,8 @@ MOZ_APP_VENDOR=BinOC
 MOZ_APP_VERSION=`cat ${_topsrcdir}/xreapps/example/config/version.txt`
 MOZ_APP_VERSION_DISPLAY=${MOZ_APP_VERSION}
 
+MOZ_DEVTOOLS=all
+
 
 # MOZ_APP_DISPLAYNAME will be set by branding/configure.sh
 # MOZ_BRANDING_DIRECTORY is the default branding directory used when none is
