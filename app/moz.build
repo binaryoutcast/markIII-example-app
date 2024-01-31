@@ -27,6 +27,62 @@ if CONFIG["LIBFUZZER"]:
         "/tools/fuzzing/libfuzzer",
     ]
 
+if CONFIG["OS_ARCH"] == "WINNT":
+    #RCINCLUDE = "splash.rc"
+    #DEFINES["MOZ_THUNDERBIRD"] = True
+
+    # Don't build thunderbird.exe with CETCOMPAT, because we need to be able to
+    # only enable it for processes that are not using JIT in xul.dll.
+
+    LINK_FLAGS["CETCOMPAT"] = []
+
+if CONFIG["MOZ_SANDBOX"] and CONFIG["OS_ARCH"] == "WINNT":
+    # For sandbox includes and the include dependencies those have
+    LOCAL_INCLUDES += [
+        "/security/sandbox/chromium",
+        "/security/sandbox/chromium-shim",
+    ]
+
+    OS_LIBS += [
+        "version",
+    ]
+
+    USE_LIBS += [
+        "sandbox_s",
+    ]
+
+    OS_LIBS += [
+        "advapi32",
+        "winmm",
+        "user32",
+    ]
+
+    DELAYLOAD_DLLS += [
+        "winmm.dll",
+        "user32.dll",
+    ]
+
+if CONFIG["OS_ARCH"] == "WINNT":
+    OS_LIBS += [
+        "ntdll",
+    ]
+
+if CONFIG["CC_TYPE"] in ("msvc", "clang-cl"):
+    # Always enter a Windows program through wmain, whether or not we're
+    # a console application.
+    WIN32_EXE_LDFLAGS += ["-ENTRY:wmainCRTStartup"]
+
+# Control the default heap size.
+# This is the heap returned by GetProcessHeap().
+# As we use the CRT heap, the default size is too large and wastes VM.
+#
+# The default heap size is 1MB on Win32.
+# The heap will grow if need be.
+#
+# Set it to 256k.  See bug 127069.
+if CONFIG["OS_ARCH"] == "WINNT" and CONFIG["CC_TYPE"] in ("msvc", "clang-cl"):
+    LDFLAGS += ["/HEAP:0x40000"]
+
 DisableStlWrapping()
 
 if CONFIG["MOZ_LINKER"]:
