@@ -7,6 +7,11 @@
 # This file basically takes over for application-specific configure as
 # well as confvars, though the latter is still in use.
 
+# Non-firefox XRE App (means it is not firefox or andorid/geckoview)
+set_config("MOZ_XREAPP", True)
+set_define("MOZ_XREAPP", True)
+add_old_configure_assignment("MOZ_XREAPP", True)
+
 # Application Options
 set_config("BINOC_EXAMPLE", True)
 set_define("BINOC_EXAMPLE", True)
