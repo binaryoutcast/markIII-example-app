@@ -9,4 +9,4 @@ MXP/XRE Example Application
 
 **Build Instructions**: Soon.
 
-Until all blocking bugs in `mozilla-central` are filed and resolved within upstream, the current platform codebase that this builds from is located: https://github.com/binaryoutcast/mozxhtml-platform.git which is currently at `mozilla-rel122`.
+Until all blocking bugs in `mozilla-central` are filed and resolved within upstream, the current platform codebase that this builds from is located: https://github.com/binaryoutcast/mxp-predev.git which is currently at `mozilla-rel122`.
