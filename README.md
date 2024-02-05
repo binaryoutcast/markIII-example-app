@@ -1,4 +1,4 @@
-XRE Example Application
+MXP/XRE Example Application
 ----
 
 **Overall Goal**: To produce a basic example mozilla application on modern mozilla.
