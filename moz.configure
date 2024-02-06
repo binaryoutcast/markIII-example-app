@@ -23,11 +23,20 @@ imply_option("MOZ_PLACES", True)
 imply_option("MOZ_REQUIRE_SIGNING", False)
 imply_option("MOZ_DEDICATED_PROFILES", False)
 imply_option("MOZ_BLOCK_PROFILE_DOWNGRADE", False)
-
 imply_option("MOZ_SERVICES_HEALTHREPORT", False)
 imply_option("MOZ_SERVICES_SYNC", False)
 
 imply_option("MOZ_NORMANDY", False)
+
+imply_option("--enable-backgroundtasks", False)
+imply_option("--enable-crashreporter", False)
+imply_option("--enable-sandbox", False)
+imply_option("--enable-unverified-updates", False)
+
+imply_option("--enable-updater", False)
+
+imply_option("MOZ_TELEMETRY_REPORTING", False)
+
 
 with only_when(target_has_linux_kernel & compile_environment):
     option(env="MOZ_NO_PIE_COMPAT", help="Enable non-PIE wrapper")
