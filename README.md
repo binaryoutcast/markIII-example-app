@@ -5,7 +5,7 @@ MXP/XRE Example Application
 
 **Functional Feature Goals**: Main Window with Menubar, Toolbar, Single Browser (not tabbed), and statusbar, a Preferences Window, Downloads Handling, and Places (History and Bookmarks).
 
-**Target Operating Systems**: Linux/Win64 minimum, anything Firefox Desktop targets wanted.
+**Target Operating Systems**: Linux minimum, anything Firefox Desktop targets wanted.
 
 **Build Instructions**: Soon.
 
