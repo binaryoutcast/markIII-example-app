@@ -1,0 +1,94 @@
+# -*- Mode: python; indent-tabs-mode: nil; tab-width: 40 -*-
+# vim: set filetype=python:
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+@template
+def xre_application_configure():
+    app_confvars = {
+        # Per application define ala MOZ_PHOENIX        
+        'BINOC_EXAMPLE': True,
+
+        # Declares this is an unsupported community application
+        'MOZ_UNSUPPORTED_COMM': True,
+
+        # We used Thunderbird's XRE stub as a basis so this needs to be
+        # defined so we don't hit a MOZ_RELEASE_ASSERT
+        'MOZ_SANDBOX_NULL_BLOCKLIST_OOP': True,
+
+        # Setting MOZ_APP_NAME doesn't seem possible directly anymore
+        'MOZ_APP_BASENAME': 'Example',
+
+        # This is still done only via confvars.sh and is here when it
+        # gets moved to moz.configure
+        # 'MOZ_APP_VENDOR': 'BinOC',
+    }
+
+    # Things we want to set_config on
+    app_config = [
+        'BINOC_EXAMPLE',
+        'MOZ_UNSUPPORTED_COMM',
+        'MOZ_SANDBOX_NULL_BLOCKLIST_OOP',
+    ]
+
+    # Things we want to set_define on
+    app_defines = [
+        'BINOC_EXAMPLE',
+        'MOZ_UNSUPPORTED_COMM',
+        'MOZ_SANDBOX_NULL_BLOCKLIST_OOP',
+    ]
+
+    # This is so that we can set the branding Display Name to the basename
+    # because confvars.sh is processed by old-configure (where MOZ_APP_NAME is set)
+    imply_option("MOZ_APP_BASENAME", app_confvars['MOZ_APP_BASENAME'])
+    add_old_configure_assignment("MOZ_APP_BASENAME", app_confvars['MOZ_APP_BASENAME'])
+
+    # These are native to moz.configure at least enough to use imply_option()
+    app_options = {
+        'MOZ_PLACES': True,
+        'MOZ_REQUIRE_SIGNING': False,
+        'MOZ_BLOCK_PROFILE_DOWNGRADE': False,
+        'MOZ_SERVICES_HEALTHREPORT': False,
+        'MOZ_SERVICES_SYNC': False,
+        'MOZ_TELEMETRY_REPORTING': False,
+
+        # MOZ_BACKGROUNDTASKS
+        '--enable-backgroundtasks': False,
+
+        # MOZ_CRASHREPORTER
+        '--enable-crashreporter': False,
+
+        # MOZ_SANDBOX
+        '--enable-sandbox': False,
+
+        # MOZ_VERIFY_MAR_SIGNATURE
+        '--enable-unverified-updates': False,
+
+        # MOZ_UPDATER
+        '--enable-updater': False,    
+    }
+
+    # Loop through all the things!
+    for i in app_config:
+      set_config(i, app_confvars[i])
+      # Expose anything we are using as an older style ac_subst/ac_define
+      # to old-configure FOR NO RAISON!!11one      
+      add_old_configure_assignment(i, app_confvars[i])
+
+    for i in app_defines:
+      set_define(i, app_confvars[i])
+
+    for k, v in app_options.items():
+      imply_option(k, v)
+
+# Do it to it
+xre_application_configure()
+
+# PIE
+with only_when(target_has_linux_kernel & compile_environment):
+    option(env="MOZ_NO_PIE_COMPAT", help="Enable non-PIE wrapper")
+    set_config("MOZ_NO_PIE_COMPAT", depends_if("MOZ_NO_PIE_COMPAT")(lambda _: True))
+
+# Include Toolkit MozConfigure
+include("../../toolkit/moz.configure")
