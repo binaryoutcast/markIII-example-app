@@ -6,8 +6,8 @@
 var { ElectrolysisUtils } = ChromeUtils.import("resource:///modules/ElectrolysisUtils.jsm");
 
 function ExampleStartup() {
-  var url = "https://www-archive.mozilla.org";
   var browser = document.getElementById("main-browser");
+  var url = Services.prefs.getCharPref("example.browser.defaultHomepage", "https://thereisonlyxul.org/")
   ElectrolysisUtils.loadAboutBlank(browser);
   ElectrolysisUtils.loadURI(browser, url);
 }
