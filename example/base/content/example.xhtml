@@ -20,7 +20,11 @@
   <head>
     <title>XUL? Not quite.</title>
     <link rel="stylesheet" href="chrome://global/skin/global.css" />
-    <script src="chrome://global/content/customElements.js" />
+    <script defer="defer" src="chrome://global/content/customElements.js" />
+    <script defer="defer" src="chrome://example/content/example.js" />
+    <script>
+      window.addEventListener("load", ExampleStartup);
+    </script>
   </head>
   <body xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         style="height: 100%;">
@@ -34,7 +38,14 @@
           </menu>
         </menubar>
       </toolbox>
-      <browser flex="1" type="content" src="https://www-archive.mozilla.org/" />
+      <stack flex="1">
+        <browser id="main-browser"
+                 flex="1"
+                 type="content"
+                 primary="true"
+                 maychangeremoteness="true"
+                 nodefaultsrc="true" />
+    </stack>
     </vbox>
   </body>
 </html>

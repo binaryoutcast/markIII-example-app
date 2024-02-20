@@ -3,23 +3,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-EXTRA_JS_MODULES += [
-    '../../../browser/modules/BrowserWindowTracker.sys.mjs',
+DIRS += [
+    "legacy-support",
 ]
 
 EXTRA_JS_MODULES += [
-    "BootstrapLoader.sys.mjs",
-    "ChromeManifest.sys.mjs",
-    "ExtensionSupport.sys.mjs",
-    "IOUtils.sys.mjs",
-    "iteratorUtils.sys.mjs",
-    "Overlays.sys.mjs",
-    "RDFDataSource.sys.mjs",
-    "RDFManifestConverter.sys.mjs",
+    "BrowserWindowTracker.sys.mjs",
+    "ElectrolysisUtils.jsm",
 ]
 
 EXTRA_JS_MODULES.sessionstore += [
     "SessionStore.sys.mjs",
 ]
 
-XPCSHELL_TESTS_MANIFESTS += ["test/xpcshell/xpcshell.ini"]
