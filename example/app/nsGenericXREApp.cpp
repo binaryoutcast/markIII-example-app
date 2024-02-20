@@ -162,10 +162,7 @@ static bool IsArg(const char* arg, const char* s) {
 Bootstrap::UniquePtr gBootstrap;
 
 static int do_main(int argc, char* argv[], char* envp[]) {
-
-  putenv(const_cast<char*>("MOZ_FORCE_DISABLE_E10S=1"));
-
-  // Allow thunderbird.exe to launch XULRunner apps via -app <application.ini>
+  // Allow example.exe to launch XULRunner apps via -app <application.ini>
   // Note that -app must be the *first* argument.
   const char* appDataFile = getenv("XUL_APP_FILE");
   if ((!appDataFile || !*appDataFile) && (argc > 1 && IsArg(argv[1], "app"))) {
