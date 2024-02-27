@@ -3,49 +3,65 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
+<!--  Mozilla DocType Reference:
+      xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      xmlns:xbl="http://www.mozilla.org/xbl"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      xmlns:svg="http://www.w3.org/2000/svg"
+      xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+-->
+
 <!DOCTYPE html>
 
 <html id="main-window"
       xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-      xmlns:svg="http://www.w3.org/2000/svg"
-      xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
       xmlns:html="http://www.w3.org/1999/xhtml"
+      xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
       windowtype="example:main"
-      style="height: 100%;"
-      screenX="10" screenY="10"
-      width="640px" height="480px"
+      screenX="10"
+      screenY="10"
+      width="640px"
+      height="480px"
+      scrolling="false"
       persist="screenX screenY width height sizemode">
-
   <head>
-    <title>XUL? Not quite.</title>
+    <title>XUL? Not quite. - Example Browser Window</title>
     <link rel="stylesheet" href="chrome://global/skin/global.css" />
+    <link rel="stylesheet" href="chrome://example/content/example.css" />
     <script defer="defer" src="chrome://global/content/customElements.js" />
     <script defer="defer" src="chrome://example/content/example.js" />
     <script>
-      window.addEventListener("load", ExampleStartup);
+      window.addEventListener("load", MainExampleFunctions.startup);
     </script>
   </head>
-  <body xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        style="height: 100%;">
+  <body xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <commandset id="mainCommandSet">
+      <command id="cmd_Exit" oncommand="MainExampleFunctions.quitApp();"/>
+
+      <command id="cmd_NavigateSomewhereElse" oncommand="MainExampleFunctions.NavigateSomewhereElse();"/>
+    </commandset>
+
     <vbox flex="1">    
       <toolbox id="example-toolbox">
         <menubar id="main-menubar">
           <menu id="file-menu" label="File">
             <menupopup id="file-popup">
-              <menuitem label="Quit"/>
+              <menuitem label="Exit" command="cmd_Exit"/>
             </menupopup>
           </menu>
         </menubar>
+        <toolbar>
+          <button label="Modern Mozilla" command="cmd_NavigateSomewhereElse"/>
+        </toolbar>
       </toolbox>
-      <stack flex="1">
-        <browser id="main-browser"
-                 flex="1"
-                 type="content"
-                 primary="true"
-                 maychangeremoteness="true"
-                 nodefaultsrc="true" />
-    </stack>
+      <browser id="main-browser"
+               flex="1"
+               type="content"
+               primary="true"
+               maychangeremoteness="true"
+               nodefaultsrc="true" />
     </vbox>
   </body>
 </html>

@@ -5,10 +5,17 @@
 
 var { ElectrolysisUtils } = ChromeUtils.import("resource:///modules/ElectrolysisUtils.jsm");
 
-function ExampleStartup() {
-  var browser = document.getElementById("main-browser");
-  var url = Services.prefs.getCharPref("example.browser.defaultHomepage", "https://thereisonlyxul.org/")
-  ElectrolysisUtils.loadAboutBlank(browser);
-  ElectrolysisUtils.loadURI(browser, url);
+var MainExampleFunctions = {
+  startup: function() {
+    var browser = document.getElementById("main-browser");
+    var homepage = Services.prefs.getCharPref("example.browser.defaultHomepage", "https://thereisonlyxul.org/");
+    ElectrolysisUtils.loadAboutBlank(browser);
+    ElectrolysisUtils.loadURI(browser, homepage);
+  },
+  quitApp: function() { Services.startup.quit(Services.startup.eAttemptQuit); },
+  NavigateSomewhereElse: function() {
+    var browser = document.getElementById("main-browser"); 
+    ElectrolysisUtils.loadURI(browser, "https://mozilla.org/");
+  }
 }
 

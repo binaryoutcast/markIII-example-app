@@ -4,5 +4,6 @@
 
 example.jar:
 % content example %content/example/ contentaccessible=yes
+  content/example/example.css                   (content/example.css)
   content/example/example.js                    (content/example.js)
   content/example/example.xhtml                 (content/example.xhtml)
