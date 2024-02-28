@@ -3,19 +3,32 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-var { ElectrolysisUtils } = ChromeUtils.import("resource:///modules/ElectrolysisUtils.jsm");
+var { EzE10SUtils } = ChromeUtils.import("resource:///modules/EzE10SUtils.jsm");
+
+ChromeUtils.defineESModuleGetters(this, {
+  BrowserToolboxLauncher: "resource://devtools/client/framework/browser-toolbox/Launcher.sys.mjs",
+});
+
+Object.defineProperty(this, "BrowserConsoleManager", {
+  get() {
+    let { loader } = ChromeUtils.importESModule("resource://devtools/shared/loader/Loader.sys.mjs");
+    return loader.require("devtools/client/webconsole/browser-console-manager").BrowserConsoleManager;
+  },
+  configurable: true,
+  enumerable: true,
+});
 
 var MainExampleFunctions = {
   startup: function() {
     var browser = document.getElementById("main-browser");
     var homepage = Services.prefs.getCharPref("example.browser.defaultHomepage", "https://thereisonlyxul.org/");
-    ElectrolysisUtils.loadAboutBlank(browser);
-    ElectrolysisUtils.loadURI(browser, homepage);
+    EzE10SUtils.loadAboutBlank(browser);
+    EzE10SUtils.loadURI(browser, homepage);
   },
   quitApp: function() { Services.startup.quit(Services.startup.eAttemptQuit); },
   NavigateSomewhereElse: function() {
     var browser = document.getElementById("main-browser"); 
-    ElectrolysisUtils.loadURI(browser, "https://mozilla.org/");
+    EzE10SUtils.loadURI(browser, "https://mozilla.org/");
   }
 }
 

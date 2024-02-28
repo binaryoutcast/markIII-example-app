@@ -11,7 +11,7 @@
  * XXXTobin: Convert to sys.mjs
  */
 
-const EXPORTED_SYMBOLS = ["ElectrolysisUtils"];
+const EXPORTED_SYMBOLS = ["EzE10SUtils"];
 
 const { E10SUtils } = ChromeUtils.importESModule(
   "resource://gre/modules/E10SUtils.sys.mjs"
@@ -20,7 +20,7 @@ const { ExtensionParent } = ChromeUtils.importESModule(
   "resource://gre/modules/ExtensionParent.sys.mjs"
 );
 
-var ElectrolysisUtils = {
+var EzE10SUtils = {
   /**
    * Loads about:blank in `browser` without switching remoteness. about:blank
    * can load in a local browser or a remote browser, and `loadURI` will make

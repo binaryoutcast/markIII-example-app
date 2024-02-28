@@ -2,8 +2,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+#filter substitution
+
 example.jar:
 % content example %content/example/ contentaccessible=yes
   content/example/example.css                   (content/example.css)
   content/example/example.js                    (content/example.js)
   content/example/example.xhtml                 (content/example.xhtml)
+
+[localization] @AB_CD@.jar:
+  example                                                               (locale/**/*.ftl)

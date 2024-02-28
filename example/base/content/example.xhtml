@@ -41,6 +41,8 @@
       <command id="cmd_Exit" oncommand="MainExampleFunctions.quitApp();"/>
 
       <command id="cmd_NavigateSomewhereElse" oncommand="MainExampleFunctions.NavigateSomewhereElse();"/>
+
+      <command id="cmd_DevTools" oncommand="BrowserToolboxLauncher.init();"/>
     </commandset>
 
     <vbox flex="1">    
@@ -54,6 +56,9 @@
         </menubar>
         <toolbar>
           <button label="Modern Mozilla" command="cmd_NavigateSomewhereElse"/>
+          <button label="Window 2" command="cmd_window2"/>          
+          <button label="DevTools" command="cmd_DevTools"/>
+          <button label="Exit" command="cmd_Exit"/>
         </toolbar>
       </toolbox>
       <browser id="main-browser"

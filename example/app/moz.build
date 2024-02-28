@@ -114,3 +114,4 @@ if CONFIG["MOZ_LINUX_32_SSE2_STARTUP_ERROR"]:
 JS_PREFERENCE_FILES += [
     "profile/all-application.js",
 ]
+

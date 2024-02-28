@@ -2,9 +2,39 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-"use strict";
+const lazy = {};
+ChromeUtils.defineESModuleGetters(lazy, {
+  NetUtil: "resource://gre/modules/NetUtil.sys.mjs",
+});
 
-function DevToolsStartup() {}
+function resolveURIInternal(aCmdLine, aArgument) {
+  var uri = aCmdLine.resolveURI(aArgument);
+
+  if (!(uri instanceof Ci.nsIFileURL)) {
+    return uri;
+  }
+
+  try {
+    if (uri.file.exists()) {
+      return uri;
+    }
+  } catch (e) {
+    console.error(e);
+  }
+
+  // We have interpreted the argument as a relative file URI, but the file
+  // doesn't exist. Try URI fixup heuristics: see bug 290782.
+
+  try {
+    uri = Services.uriFixup.getFixupURIInfo(aArgument, 0).preferredURI;
+  } catch (e) {
+    console.error(e);
+  }
+
+  return uri;
+}
+
+export function DevToolsStartup() {}
 
 DevToolsStartup.prototype = {
   QueryInterface: ChromeUtils.generateQI(["nsICommandLineHandler"]),
@@ -17,6 +47,12 @@ DevToolsStartup.prototype = {
     const devtoolsFlag = cmdLine.handleFlag("devtools", false);
     if (devtoolsFlag) {
       this.handleDevToolsFlag(cmdLine);
+    }
+
+    var chromeFlag = cmdLine.handleFlagWithParam("chrome", false);
+    if (chromeFlag) {
+      // The parameter specifies the window to open.
+      this.handleChromeFlag(cmdLine, chromeFlag);
     }
   },
 
@@ -31,24 +67,28 @@ DevToolsStartup.prototype = {
     }
   },
 
+  handleChromeFlag(cmdLine, chromeParam) {
+    try {
+      const argstring = Cc["@mozilla.org/supports-string;1"].createInstance(
+        Ci.nsISupportsString
+      );
+
+      const _uri = resolveURIInternal(cmdLine, chromeParam);
+
+      // only load URIs which do not inherit chrome privs
+      if (!Services.io.URIChainHasFlags(_uri, Ci.nsIProtocolHandler.URI_INHERITS_SECURITY_CONTEXT)) {
+        Services.ww.openWindow(null, _uri.spec, "_blank", "chrome,dialog=no,all", argstring);
+        cmdLine.preventDefault = true;
+      }
+    } catch (e) { dump(e); }
+  },
+
   initialize() {
     const { loader, require, DevToolsLoader } = ChromeUtils.importESModule(
       "resource://devtools/shared/loader/Loader.sys.mjs"
     );
     const { DevToolsServer } = require("devtools/server/devtools-server");
     const { gDevTools } = require("devtools/client/framework/devtools");
-
-    // Set up the client and server chrome window type, make sure it can't be set
-    Object.defineProperty(DevToolsServer, "chromeWindowType", {
-      get: () => "mail:3pane",
-      set: () => {},
-      configurable: true,
-    });
-    Object.defineProperty(gDevTools, "chromeWindowType", {
-      get: () => "mail:3pane",
-      set: () => {},
-      configurable: true,
-    });
 
     // Make sure our root actor is always registered, no matter how devtools are called.
     const devtoolsRegisterActors =
@@ -58,7 +98,7 @@ DevToolsStartup.prototype = {
       if (options.root) {
         const {
           createRootActor,
-        } = require("resource:///modules/tb-root-actor.js");
+        } = require("resource:///modules/devtools-root-actor.js");
         DevToolsServer.setRootActor(createRootActor);
       }
     };
@@ -76,5 +116,3 @@ DevToolsStartup.prototype = {
     DevToolsServer.registerAllActors();
   },
 };
-
-var EXPORTED_SYMBOLS = ["DevToolsStartup"];
